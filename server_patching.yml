@@ -1,0 +1,26 @@
+-
+  name: Apply patching activities (Upgrade)
+  hosts: servers
+  become: yes
+  tasks:
+    - name: upgrade all servers
+      apt:
+        update_cache: yes
+        upgrade: dist
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Rebbot the servers
+      reboot:
+         reboot_timeout: 600
+         msg: "Rebooting servers: Patching Activity in progress"
+
+    - name: upgrade all RHEL/Centos servers
+      dnf:
+        name: "*"
+        state: latest
+      when: ansible_distribution == "Amazon" or ansible_distribution == "RedHat"
+
+    - name: Reboot the servers
+      reboot:
+        reboot_timeout: 600
+        msg: "Rebooting servers: Patching Activity in progress"
