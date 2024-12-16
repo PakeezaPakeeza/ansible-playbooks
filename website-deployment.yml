@@ -1,0 +1,36 @@
+-
+  name: website deployment
+  become: yes
+  hosts: servers
+
+  tasks:
+   - name: Install nginx and Deploy website using nginx
+     apt:
+       name: nginx
+       state: latest
+     when: ansible_distribution == "Ubuntu"
+
+   - name: start nginx
+     service:
+       name: nginx
+       state: started
+       enabled: yes
+     when: ansible_distribution == "Ubuntu"
+#-------------------#
+   - name: Install httpd and Deploy website using Apache HTTPD
+     dnf:
+       name: httpd
+       state: latest
+     when: ansible_distribution == "Amazon" or ansible_distribution == "RedHat"
+
+   - name: start httpd
+     service:
+       name: httpd
+       state: started
+       enabled: yes
+     when: ansible_distribution == "Amazon" or ansible_distribution == "RedHat"
+
+   - name: copy website files to server destination
+     copy:
+       src: /home/ubuntu/carvilla-v1.0/
+       dest: /var/www/html/
