@@ -1,0 +1,16 @@
+#use of Ad-hoc command
+-
+ name: Server Stats Playbook
+ hosts: servers
+ tasks:
+   - name: show date
+     command: date
+
+   - name: show Ram
+     command: free -h
+
+   - name: show disk
+     command: df -h
+
+   - name: show uptime
+     command: uptime
