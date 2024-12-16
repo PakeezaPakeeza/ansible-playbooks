@@ -1,0 +1,18 @@
+#sudo vim /etc/ansible/hosts
+# this host is with group of 3 different type of servers(ubuntu,Redhat, Al2) using two different .pem keys
+
+[servers]
+server1 ansible_host=3.72.255.192
+server2 ansible_host=3.66.188.37
+server1 ansible_user=ec2-user
+server2 ansible_user=ubuntu
+
+server3 ansible_host=63.176.49.176
+server3 ansible_user=ec2-user
+server3 ansible_ssh_private_key_file=/home/ubuntu/keys/batch-8-redhat.pem
+
+
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+ansible_ssh_private_key_file=/home/ubuntu/keys/ansible-key.pem
