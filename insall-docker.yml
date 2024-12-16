@@ -1,0 +1,16 @@
+-
+  name: Install Docker
+  hosts: servers
+  become: yes
+  tasks:
+    - name: install docker based on server distribution
+      apt:
+        name: docker.io
+        state: latest
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: install the latest version of docker based on distribution
+      dnf:
+        name: docker
+        state: latest
+      when: ansible_distribution == 'Amazon' or ansible_distribution == 'Redhat'
