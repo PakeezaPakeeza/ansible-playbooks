@@ -1,4 +1,4 @@
-#use of Ad-hoc command
+#use of Ad-hoc command(linux command) using command module
 -
  name: Server Stats Playbook
  hosts: servers
