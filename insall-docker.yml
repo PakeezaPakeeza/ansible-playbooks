@@ -11,6 +11,7 @@
         state: latest
       when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 #python2 uses yum and python3 uses dnf
+#ansible -ihosts -u ans -k -m setup all -a "filter=ansible_distribution*"      <------ this command filters distribution for you
     - name: install the latest version of docker based on distribution
       dnf:
         name: docker
