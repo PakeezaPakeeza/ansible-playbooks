@@ -1,4 +1,5 @@
 #refrence document https://docs.ansible.com/ansible/2.8/modules/apt_module.html?highlight=apt
+#beauty of playbook ---> you dont need to write the -y , sudo install and blah blah :p
 -
   name: Install Docker
   hosts: servers
