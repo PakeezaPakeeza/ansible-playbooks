@@ -1,4 +1,5 @@
 #use of Ad-hoc command(linux command) using command module
+#to run playbook ----> ansible-playbook -v <playbook-name.yml>
 -
  name: Server Stats Playbook
  hosts: servers
