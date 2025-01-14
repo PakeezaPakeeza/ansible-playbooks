@@ -4,7 +4,7 @@
   hosts: servers
 
   tasks:
-   - name: Install nginx and Deploy website using nginx
+   - name: Install nginx and Deploy website using nginx (ubuntu)
      apt:
        name: nginx
        state: latest
@@ -17,7 +17,7 @@
        enabled: yes
      when: ansible_distribution == "Ubuntu"
 #-------------------#
-   - name: Install httpd and Deploy website using Apache HTTPD
+   - name: Install httpd and Deploy website using Apache HTTPD (Amazon/Redhat)
      dnf:
        name: httpd
        state: latest
