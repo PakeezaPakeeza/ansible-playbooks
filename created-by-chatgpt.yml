@@ -1,0 +1,73 @@
+- name: Website Deployment
+  become: yes
+  hosts: servers
+
+  tasks:
+    # Start and enable nginx on Ubuntu
+    - name: Start and enable nginx (Ubuntu)
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+      when: ansible_distribution == "Ubuntu"
+
+    # Install httpd for Amazon Linux and RedHat
+    - name: Install httpd (Amazon/RedHat)
+      dnf:
+        name: httpd
+        state: latest
+      when: ansible_distribution == "Amazon" or ansible_distribution == "RedHat"
+
+    - name: Start and enable httpd (Amazon/RedHat)
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+      when: ansible_distribution == "Amazon" or ansible_distribution == "RedHat"
+
+    # Copy website files to the appropriate web root
+    - name: Copy website files
+      copy:
+        src: /home/ubuntu/carvilla-v1.0/
+        dest: /var/www/html/
+        owner: "{{ 'www-data' if ansible_distribution == 'Ubuntu' else 'apache' }}"
+        group: "{{ 'www-data' if ansible_distribution == 'Ubuntu' else 'apache' }}"
+        mode: '0755'
+
+    # Ensure proper permissions for website files
+    - name: Ensure proper permissions for website files
+      file:
+        path: /var/www/html/
+        owner: "{{ 'www-data' if ansible_distribution == 'Ubuntu' else 'apache' }}"
+        group: "{{ 'www-data' if ansible_distribution == 'Ubuntu' else 'apache' }}"
+        recurse: yes
+
+    # Open HTTP port on Ubuntu using UFW
+    - name: Allow HTTP traffic (Ubuntu)
+      ufw:
+        rule: allow
+        port: '80'
+        proto: tcp
+      when: ansible_distribution == "Ubuntu"
+
+    # Open HTTP port on Amazon and RedHat using Firewalld
+    - name: Allow HTTP traffic (Amazon/RedHat)
+      firewalld:
+        service: http
+        permanent: yes
+        state: enabled
+      when: ansible_distribution == "Amazon" or ansible_distribution == "RedHat"
+
+    - name: Reload firewalld (Amazon/RedHat)
+      firewalld:
+        state: reloaded
+      when: ansible_distribution == "Amazon" or ansible_distribution == "RedHat"
+
+    # Debugging: Verify website files
+    - name: Verify website files
+      shell: "ls -l /var/www/html/"
+      register: file_list
+
+    - name: Debug copied files
+      debug:
+        var: file_list.stdout
