@@ -29,7 +29,8 @@
        state: started
        enabled: yes
      when: ansible_distribution == "Amazon" or ansible_distribution == "RedHat"
-
+     
+#scp -i .\n.virginia-key.pem -r C:\Users\dci-student\Downloads\carvilla-v1.0\ ubuntu@18.205.21.13:/home/ubuntu/
    - name: copy website files to server destination
      copy:
        src: /home/ubuntu/carvilla-v1.0/
